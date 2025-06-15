@@ -3,23 +3,27 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class AutoPracticeFormTests {
 
     @BeforeAll
-    static void beforeAll() {
+    static void setUp() {
         Configuration.browserSize = "1920x1080";
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.pageLoadStrategy = "eager";
-        Configuration.holdBrowserOpen = true;
-        Configuration.timeout = 5000; // default 4000
+
+
     }
 
     @Test
     void fillFormTest() {
         open("/automation-practice-form");
 
+        //убираем рекламу
+        executeJavaScript("$('footer').remove();");
+        executeJavaScript("$('#fixedban').remove();");
 
         //Заполняем Name
         $("#firstName").setValue("Anna");
@@ -42,12 +46,10 @@ public class AutoPracticeFormTests {
         $$(".react-datepicker__day").findBy(text("4")).click();
 
         //выбираем предметы
-
         $("#subjectsInput").setValue("Mat");
         $("#react-select-2-option-0").click();
 
         //выбираем хобби
-
         $("label[for='hobbies-checkbox-1']").click();
 
         // выбираем файл
@@ -64,23 +66,69 @@ public class AutoPracticeFormTests {
         $("#react-select-4-option-0").click();
 
         // нажимаем подтвердить
-
         $("#submit").scrollIntoView(true).click();
 
         //проверяем что в модальном окне наши введенные данные
-        $(".table-responsive").
-                shouldHave(
-                        text("Anna Rozhkova"),
-                        text("ex@adress.com"),
-                        text("Female"),
-                        text("9325566047"),
-                        text("04 June,1991"),
-                        text("Maths"),
-                        text("Sports"),
-                        text("test.png"),
-                        text("Russia, Orenburg"),
-                        text("NCR Delhi")
-                );
+        $(".table-responsive")
+                .$(byText("Student Name"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(text("Anna Rozhkova"));
+
+        $(".table-responsive")
+                .$(byText("Student Email"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(text("ex@adress.com"));
+
+        $(".table-responsive")
+                .$(byText("Gender"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(text("Female"));
+
+        $(".table-responsive")
+                .$(byText("Mobile"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(text("9325566047"));
+
+        $(".table-responsive")
+                .$(byText("Date of Birth"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(text("04 June,1991"));
+
+        $(".table-responsive")
+                .$(byText("Subjects"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(text("Maths"));
+
+        $(".table-responsive")
+                .$(byText("Hobbies"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(text("Sports"));
+
+        $(".table-responsive")
+                .$(byText("Picture"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(text("test.png"));
+
+        $(".table-responsive")
+                .$(byText("Address"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(text("Russia, Orenburg"));
+
+        $(".table-responsive")
+                .$(byText("State and City"))
+                .parent()
+                .$("td", 1)
+                .shouldHave(text("NCR Delhi"));
+
 
     }
 }
