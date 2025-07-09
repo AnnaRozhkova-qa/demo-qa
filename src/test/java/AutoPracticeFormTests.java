@@ -68,6 +68,9 @@ public class AutoPracticeFormTests {
         // нажимаем подтвердить
         $("#submit").scrollIntoView(true).click();
 
+        //проверяем что появилось модальное окно успеха
+        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+
         //проверяем что в модальном окне наши введенные данные
         $(".table-responsive")
                 .$(byText("Student Name"))
